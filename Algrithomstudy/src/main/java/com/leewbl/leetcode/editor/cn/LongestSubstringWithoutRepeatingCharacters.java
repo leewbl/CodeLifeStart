@@ -67,7 +67,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
             for (int i = 0; i < chars.length; i++) {
                 boolean found = false;
                 for (int j = 0; j <= chars.length - length; j++) {
-                    if (isSubStringOfTarget(chars, j, length)) {
+                    if (isSubStringOfTarget(s, j, length)) {
                         found = true;
                         length++;
                         break;
@@ -80,13 +80,27 @@ public class LongestSubstringWithoutRepeatingCharacters {
             return -1;
         }
 
-        private boolean isSubStringOfTarget(char[] chars, int j, int length) {
+        private boolean isSubStringOfTargetHash(char[] chars, int j, int length) {
             Map<Character, Boolean> map = new HashMap<Character, Boolean>();
             for (int i = j; i < j + length; i++) {
                 char aChar = chars[i];
                 if (null == map.get(aChar)) {
                     map.put(aChar, true);
                 } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private boolean isSubStringOfTarget(String string, int j, int length) {
+            if (length == 1) {
+                return true;
+            }
+            for (int i = j; i < j + length - 1; i++) {
+                char ch = string.charAt(i);
+                String s = string.substring(i + 1, j + length);
+                if (s.indexOf(ch) != -1) {
                     return false;
                 }
             }
