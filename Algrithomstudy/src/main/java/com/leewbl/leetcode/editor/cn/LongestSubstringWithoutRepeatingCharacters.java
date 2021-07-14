@@ -48,16 +48,54 @@
 
 package com.leewbl.leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LongestSubstringWithoutRepeatingCharacters {
     public static void main(String[] args) {
         Solution solution = new LongestSubstringWithoutRepeatingCharacters().new Solution();
+        solution.lengthOfLongestSubstring("pwwkew");
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        public int lengthOfLongestSubstring(String s) {
+            if (s.length() == 0) {
+                return 0;
+            }
+            int left = 0, right = 1;
+            int length = 1, max = 1;
+            char[] chars = s.toCharArray();
+            LinkedList<Character> characters = new LinkedList<Character>();
+            characters.addFirst(chars[0]);
+            while (right < chars.length) {
+                char rightChar = chars[right];
+                if (!characters.contains(rightChar)) {
+                    // spread right
+                    characters.addLast(rightChar);
+                    length++;
+                    if (length > max) {
+                        max = length;
+                    }
+                    right++;
+                } else {
+                    characters.removeFirst();
+                    length--;
+                    if (!characters.contains(rightChar)) {
+                        characters.addLast(rightChar);
+                        right++;
+                        length++;
+                    }
+                }
+
+            }
+            return max;
+        }
+    }
+
+    //leetcode submit region end(Prohibit modification and deletion)
+
+    // n^3
+    class Solution0 {
         public int lengthOfLongestSubstring(String s) {
             if (s.length() == 0) {
                 return 0;
@@ -80,19 +118,6 @@ public class LongestSubstringWithoutRepeatingCharacters {
             return -1;
         }
 
-        private boolean isSubStringOfTargetHash(char[] chars, int j, int length) {
-            Map<Character, Boolean> map = new HashMap<Character, Boolean>();
-            for (int i = j; i < j + length; i++) {
-                char aChar = chars[i];
-                if (null == map.get(aChar)) {
-                    map.put(aChar, true);
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         private boolean isSubStringOfTarget(String string, int j, int length) {
             if (length == 1) {
                 return true;
@@ -107,6 +132,40 @@ public class LongestSubstringWithoutRepeatingCharacters {
             return true;
         }
     }
-//leetcode submit region end(Prohibit modification and deletion)
 
+    // double pointer
+    class Solution1 {
+        public int lengthOfLongestSubstring(String s) {
+            if (s.length() == 0) {
+                return 0;
+            }
+            int left = 0, right = 1;
+            int length = 1, max = 1;
+            char[] chars = s.toCharArray();
+            LinkedList<Character> characters = new LinkedList<Character>();
+            characters.addFirst(chars[0]);
+            while (right < chars.length) {
+                char leftChar = chars[left];
+                char rightChar = chars[right];
+                if (!characters.contains(rightChar)) {
+                    // spread right
+                    characters.addLast(rightChar);
+                    length++;
+                    if (length > max) {
+                        max = length;
+                    }
+                    right++;
+                } else {
+                    left++;
+                    characters.removeFirst();
+                    if (!characters.contains(rightChar)) {
+                        characters.addLast(rightChar);
+                    }
+                }
+
+            }
+            return max;
+        }
+
+    }
 }
