@@ -74,7 +74,6 @@ public class RepeatedDnaSequences {
 
             for (int i = 0; i <= length - 10; i++) {
                 int tmp = construct(bytes, i);
-                System.out.println(convert(tmp));
                 if (showTimes[tmp] >= 0) {
                     showTimes[tmp]++;
                     if (showTimes[tmp] > 1) {
